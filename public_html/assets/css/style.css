@@ -1,11 +1,84 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
 /* 
     Created on : Feb 25, 2015, 12:33:02 PM
     Author     : RY Jin
 */
+.body{
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+}
+.main{
+    width: 800px;
+    margin: 0 auto;
+}
+.head{
+    text-align: right;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+.body{
+    
+}
+.footer{
+    
+}
+/*sides*/
+.left{
+    float: left;
+    width: 600px;
+}
+.right{
+    float: right;
+    width: 200px;
+}
+/*components*/
+.header-box{
+    width: 595px;
+    margin: 5px;
+}
+.header-box-table {
+    
+}
+.avatar{
+    width: 100px;
+    height: 100px;
+}
+.details-box{
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    margin-bottom: 10px;
+    padding: 2px;
+}
+.content-select-box{
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    margin-bottom: 10px;
+    padding: 2px;
+}
+.followers-box{
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    margin-bottom: 10px;
+    padding: 2px;
+}
 
+/*linkages*/
+.tweetTagLink{
+    color: cornflowerblue;
+}
+.tweetMentionLink{
+    color: cornflowerblue;
+}
 
+a:link {text-decoration: none;}
+a:visited {text-decoration: none;}
+a:hover {text-decoration: none}
+a:active {text-decoration: none;}
+
+ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
