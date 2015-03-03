@@ -43,23 +43,14 @@
     height: 100px;
 }
 .details-box{
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
     margin-bottom: 10px;
     padding: 2px;
 }
 .content-select-box{
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
     margin-bottom: 10px;
     padding: 2px;
 }
 .followers-box{
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
     margin-bottom: 10px;
     padding: 2px;
 }
