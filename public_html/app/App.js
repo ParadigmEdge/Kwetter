@@ -4,22 +4,30 @@
  * and open the template in the editor.
  */
 (function() {
-  var app = angular.module('App', ['ngRoute']);
+  var app = angular.module('App', []);
     
     app.config(['$routeProvider',
     function($routeProvider) {
-      $routeProvider.
-        when('/login', {
-          templateUrl: 'app/components/personalPage/myView.html',
-          controller: 'App'
-        }).
-        when('/main', {
-          templateUrl: 'index.html',
-          controller: 'App'
-        }).
-        otherwise({
-            redirectTo: 'app/components/shared/notfound.html',
-            controller: 'App'
+        $routeProvider
+        .when('/', {
+        templateUrl: 'index.html',
+        controller: 'App'
+        })
+        .when('/login', {
+        templateUrl: 'login.html',
+        controller: 'App'
+        })
+        .when('/main', {
+        templateUrl: 'index.html',
+        controller: 'App'
+        })
+        .when('/myView', {
+        templateUrl: 'myView.html',
+        controller: 'App'
+        })
+        .otherwise({
+        redirectTo: 'app/components/shared/notfound.html',
+        controller: 'App'
         });
     }]);
 
@@ -34,6 +42,7 @@
         this.currentUser = 0;   // fake logged in user, does not work if redirected from other page but only mock anyways
         this.selectedTimelineTab = 1; // personal timeline tab / mentions tab
         this.setSelectedUser = function(userName){
+
             this.selectedUser = userName;
         };
         this.setCurrentUser = function(userName){
@@ -50,6 +59,54 @@
         };
         this.timelineTabIsSet = function(tabName){
             return(this.selectedTimelineTab === tabName);
+        };
+        this.addTweet = function(tweet){
+            var wholeTweet = tweet;
+            var tags = [];
+            var mentions = [];
+            while(wholeTweet.indexOf("#")>-1){
+                var start = wholeTweet.indexOf("#");
+                var end = wholeTweet.IndexOf(" ", start);
+                var tag = wholeTweet.substring(start+1, end);
+                wholeTweet.replace("#"+tag,"");
+                tags.push(tag);
+            }
+            while(wholeTweet.indexOf("@")>-1){
+                var start = wholeTweet.indexOf("@");
+                
+                var end1 = wholeTweet.IndexOf(" ", start);
+                var end2 = wholeTweet.IndexOf("#", start);
+                var end3 = wholeTweet.IndexOf("@", start);
+                
+                var end;
+               
+                var mention = wholeTweet.substring(start+1, end);
+                wholeTweet.replace("@"+wholeTweet,"");
+                mentions.push(mention);
+            }
+            //TODO: split on tags and mentions
+            var newTweet = {
+                tweetId: (this.users[this.currentUser].tweets.length) + 1,
+                userId: this.currentUser,
+                tweetDate: new Date(),
+                tweetContent: tweet,
+                tweetTags: [],
+                tweetMentions: [],
+                getDate: function(){
+                    var date = this.tweetDate;
+                    var dd = date.getDate();
+                    var mm = date.getMonth()+1;
+                    var yyyy = date.getFullYear();
+                    var HH = date.getHours();
+                    var MM = date.getMinutes();
+
+                    if(dd<10) {dd='0'+dd;} 
+                    if(mm<10) {mm='0'+mm;} 
+                    date = mm+'/'+dd+'/'+yyyy+' '+HH+':'+MM;
+                    return date;
+                }
+            };
+            this.users[this.currentUser].addTweet(newTweet);
         };
     }]);
     
@@ -251,7 +308,6 @@
     ];
     
     var testTrends = ["JEA", "DPI", "Specna arms", "Banana", "Chappie"];
-    
     var allTweets = testTweets.concat(testTweets2).concat(testTweets3);
     
     var yongyi = {
@@ -265,7 +321,10 @@
         avatar_thumb:"assets/img/avatar_yongyi.jpg",
         tweets: testTweets,
         following:[],
-        followers:[] 
+        followers:[],
+        addTweet : function(tweet){
+            this.tweets.push(tweet);
+        }
     };
     var link = {
         id:1,
@@ -278,7 +337,10 @@
         avatar_thumb:"assets/img/avatar_random.jpg",
         tweets:testTweets2,
         following:[],
-        followers:[]
+        followers:[],
+        addTweet : function(tweet){
+            this.tweets.push(tweet);
+        }
     };
     var ba = {
         id:2,
@@ -291,7 +353,10 @@
         avatar_thumb:"assets/img/avatar_ba.jpg",
         tweets:[],
         following:[],
-        followers:[]
+        followers:[],
+        addTweet : function(tweet){
+            this.tweets.push(tweet);
+        }
     };
     
     yongyi.following.push(link, ba);

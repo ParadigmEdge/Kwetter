@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="App">
+    <head>
+        <title>My page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/style-personalView.css">
+    </head>
+    <body ng-controller="App as app">
+        <div class="main" >
+            <div class="head">
+                Hello {{app.users[app.currentUser].name}}, 
+                <a href="index.html" ng-click="app.setCurrentUser(-1)"> logout</a>
+                <div class="searchBox">
+                    <form method="get">
+                        <input type="text" name="searchText" placeholder="search..." ng-model="tweet.search"/>
+                        <div class="hidden-submit"><input type="submit" tabindex="-1" name="searchSubmit" value="submit"/></div>
+                    </form>
+                </div>
+            </div>
+            <div class="body">
+                <div class="wrapper">
+                    <div class="leftbody">
+                        <div class="tweetBox">
+                            <h2>Whats happening?</h2>
+                            <form novalidate class="tweet-form" ng-submit="app.addTweet(app.user.tweet)">
+                                <textarea class="tweetContent" maxlength="140" ng-model="app.user.tweet"></textarea>
+                                <div class="submit"><input type="submit" name="searchSubmit" value="tweet"/></div>
+                            </form>           
+                        </div>
+
+                        <div class="timelineBox">
+                            <ul class="timelineSelectList">
+                                <li class="timelineSelectListItem" ng-class='{active:tab.timelineTabIsSet(1)}'><a href='#' ng-click='app.setTimelineTab(1)'>Timeline</a></li>
+                                <li class="timelineSelectListItem" ng-class='{active:tab.timelineTabIsSet(2)}'><a href='#' ng-click='app.setTimelineTab(2)'>@Mentions</a></li>
+                            </ul>
+                            
+                            <div class="timeline" ng-show='app.timelineTabIsSet(1)'>
+                                <div class="followers">
+                                    <br>
+                                    <ul class="list-inline content">
+                                        <li ng-repeat="tweet in app.timeline | filter:tweet.search | date">
+                                            [{{tweet.getDate()}}] {{tweet.tweetContent}} 
+                                            <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags track by $index">#{{t}}</a> 
+                                            <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions track by $index">@{{m}}</a> 
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="mentions" ng-show='app.timelineTabIsSet(2)'>
+                                <div class="tweets">
+                                    <br>
+                                    <ul class="list-inline content">
+                                        <li ng-repeat="tweet in app.mentions | date">
+                                            [{{tweet.getDate()}}] {{tweet.tweetContent}} 
+                                            <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags track by $index">#{{t}}</a> 
+                                            <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions track by $index">@{{m}}</a> 
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>  
+                            
+                        </div>
+                    </div>
+                    <div class="rightbody">
+                        <div class="infoBox">
+                            <ul>
+                                <li>
+                                    Your tweets ({{app.users[app.selectedUser].tweets.length}})
+                                    <br>
+                                    <i>Just now:</i> {{app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetContent}}
+                                    <br><br>
+                                </li>
+                                <li>
+                                    Following ({{app.users[app.selectedUser].followers.length}})
+                                    <br>
+                                    <ul class="followersList">
+                                        <li ng-repeat="n in app.users[app.selectedUser].followers track by $index">
+                                            <a href="index.html" ng-click="app.setSelectedUser(n.id)">{{n.name}}</a>
+                                        </li>
+                                    </ul>
+                                    <br><br>
+                                </li>
+                                <li>
+                                    Followers ({{app.users[app.selectedUser].following.length}})
+                                    <br>
+                                    <ul class="followersList">
+                                        <li ng-repeat="p in app.users[app.selectedUser].following track by $index">
+                                            <a href="index.html" ng-click="app.setSelectedUser(p.id)">{{p.name}}</a>
+                                        </li>
+                                    </ul>
+                                    <br><br>
+                                </li>
+                            </ul>
+                            
+                        </div>
+
+                        <div class="trendingBox">
+                            <h3>Trends</h3>
+                            <ul class="list-inline content">
+                                <li ng-repeat="trend in app.trends track by $index">
+                                    <a href="#" class="trendLink">#{{trend}}</a> 
+                                </li>
+                            </ul>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="footer">       
+            </div>
+        </div>
+    </body>
+    <footer>
+        <script src="assets/libs/angular.js"></script>
+        <script src="assets/libs/angular-route.js"></script>
+        <script src="app/App.js"></script>
+    </footer>
+</html>
