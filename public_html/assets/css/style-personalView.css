@@ -47,8 +47,10 @@ and open the template in the editor.
     resize: none;
 }
 .rightbody{
-    width: 300px;
+    width: 280px;
     float: right;
+    margin-top: 50px;
+    margin-left: 20px;
 }
 
 .timelineSelectList li{

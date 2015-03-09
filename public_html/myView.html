@@ -28,8 +28,8 @@ and open the template in the editor.
                     <div class="leftbody">
                         <div class="tweetBox">
                             <h2>Whats happening?</h2>
-                            <form novalidate class="tweet-form" ng-submit="app.addTweet(app.user.tweet)">
-                                <textarea class="tweetContent" maxlength="140" ng-model="app.user.tweet"></textarea>
+                            <form novalidate ng-controller="tweetController as controller" class="tweet-form" ng-submit="controller.addTweet(app.users[app.currentUser])">
+                                <textarea class="tweetContent" maxlength="140" ng-model="controller.newTweetContent"></textarea>
                                 <div class="submit"><input type="submit" name="searchSubmit" value="tweet"/></div>
                             </form>           
                         </div>
@@ -44,10 +44,11 @@ and open the template in the editor.
                                 <div class="followers">
                                     <br>
                                     <ul class="list-inline content">
-                                        <li ng-repeat="tweet in app.timeline | filter:tweet.search | date">
+                                        <!-- order by date is not working...yet...  -->
+                                        <li ng-repeat="tweet in app.timeline | orderBy:'tweetId' | filter:tweet.search">
                                             [{{tweet.getDate()}}] {{tweet.tweetContent}} 
-                                            <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags track by $index">#{{t}}</a> 
-                                            <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions track by $index">@{{m}}</a> 
+                                            <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags ">{{t}}</a> 
+                                            <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions ">{{m}}</a> 
                                         </li>
                                     </ul>
                                 </div>
@@ -74,7 +75,10 @@ and open the template in the editor.
                                 <li>
                                     Your tweets ({{app.users[app.selectedUser].tweets.length}})
                                     <br>
-                                    <i>Just now:</i> {{app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetContent}}
+                                    <i>Just now:</i> 
+                                    {{app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetContent}} 
+                                    <a href="" class="tweetTagLink" ng-show="app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetTags.length > 0" ng-repeat="t in app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetTags track by $index">{{t}}</a> 
+                                    <a href="" class="tweetMentionLink" ng-show="app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetMentions.length > 0"ng-repeat="m in app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetMentions track by $index">{{m}}</a> 
                                     <br><br>
                                 </li>
                                 <li>

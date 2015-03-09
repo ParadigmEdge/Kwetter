@@ -4,10 +4,11 @@
  * and open the template in the editor.
  */
 (function() {
-  var app = angular.module('App', []);
+  var app = angular.module('App', ['ngRoute']);
     
     app.config(['$routeProvider',
     function($routeProvider) {
+        console.log("route provider used");
         $routeProvider
         .when('/', {
         templateUrl: 'index.html',
@@ -36,6 +37,7 @@
         this.users = [yongyi,link,ba];
         this.mentions = testTweets3;
         this.trends = testTrends;
+//        this.timeline = allTweets.reverse();
         this.timeline = allTweets;
         this.selectedTab = 3;   // main page tweets tab
         this.selectedUser = 0;  // id of the selected page, assumption: community pages are also users.
@@ -60,53 +62,63 @@
         this.timelineTabIsSet = function(tabName){
             return(this.selectedTimelineTab === tabName);
         };
-        this.addTweet = function(tweet){
-            var wholeTweet = tweet;
+    }]);
+    
+    app.controller('tweetController', [function(){
+        this.newTweetContent = "";
+        this.tweet = {};
+            
+        this.addTweet = function(user){  
+            var tweetContent = this.newTweetContent;
             var tags = [];
             var mentions = [];
-            while(wholeTweet.indexOf("#")>-1){
-                var start = wholeTweet.indexOf("#");
-                var end = wholeTweet.IndexOf(" ", start);
-                var tag = wholeTweet.substring(start+1, end);
-                wholeTweet.replace("#"+tag,"");
-                tags.push(tag);
-            }
-            while(wholeTweet.indexOf("@")>-1){
-                var start = wholeTweet.indexOf("@");
-                
-                var end1 = wholeTweet.IndexOf(" ", start);
-                var end2 = wholeTweet.IndexOf("#", start);
-                var end3 = wholeTweet.IndexOf("@", start);
-                
-                var end;
-               
-                var mention = wholeTweet.substring(start+1, end);
-                wholeTweet.replace("@"+wholeTweet,"");
-                mentions.push(mention);
-            }
-            //TODO: split on tags and mentions
-            var newTweet = {
-                tweetId: (this.users[this.currentUser].tweets.length) + 1,
-                userId: this.currentUser,
-                tweetDate: new Date(),
-                tweetContent: tweet,
-                tweetTags: [],
-                tweetMentions: [],
-                getDate: function(){
-                    var date = this.tweetDate;
-                    var dd = date.getDate();
-                    var mm = date.getMonth()+1;
-                    var yyyy = date.getFullYear();
-                    var HH = date.getHours();
-                    var MM = date.getMinutes();
-
-                    if(dd<10) {dd='0'+dd;} 
-                    if(mm<10) {mm='0'+mm;} 
-                    date = mm+'/'+dd+'/'+yyyy+' '+HH+':'+MM;
-                    return date;
+            
+            var tagslistarr = this.newTweetContent.split(' ');
+            for (var i = 0; i < tagslistarr.length; i++) { 
+                if(tagslistarr[i].indexOf('#') === 0){
+                  var pattern = tagslistarr[i],
+                  re = new RegExp(pattern, "g");
+                  tweetContent = tweetContent.replace(re, "");
+                  
+                  tags.push(tagslistarr[i]);
                 }
+                if(tagslistarr[i].indexOf('@') === 0){
+                  var pattern = tagslistarr[i],
+                  re = new RegExp(pattern, "g");
+                  tweetContent = tweetContent.replace(re, "");
+                  
+                  mentions.push(tagslistarr[i]);  
+                }
+            }    
+   
+            this.tweet.tweetId = (user.tweets.length) +1;
+            this.tweet.userId = user.id;
+            this.tweet.tweetDate = new Date();
+            console.log(this.tweet.tweetDate);
+            console.log(new Date().getTime());
+            console.log(new Date().toDateString());
+            this.tweet.tweetContent = tweetContent;
+            this.tweet.tweetTags = tags;
+            this.tweet.tweetMentions = mentions;
+            this.tweet.getDate = function(){
+                var date = this.tweetDate;
+                var dd = date.getDate();
+                var mm = date.getMonth()+1;
+                var yyyy = date.getFullYear();
+                var HH = date.getHours();
+                var MM = date.getMinutes();
+
+                if(dd<10) {dd='0'+dd;} 
+                if(mm<10) {mm='0'+mm;} 
+                date = mm+'/'+dd+'/'+yyyy+' '+HH+':'+MM;
+                return date;
             };
-            this.users[this.currentUser].addTweet(newTweet);
+            
+            user.tweets.push(this.tweet);
+            allTweets.push(this.tweet); //hack, pushes to pos 0 in array. (need to sue sorting method)
+//            allTweets.unshift(this.tweet); //hack, pushes to pos 0 in array. (need to sue sorting method)
+            
+            this.tweet = {};
         };
     }]);
     
@@ -139,7 +151,7 @@
             tweetDate: new Date(),
             tweetContent: "specna arms makes decent stuff, check it out!",
             tweetTags: [],
-            tweetMentions: ["Link", "Ba"],
+            tweetMentions: ["@Link", "@Ba"],
             getDate: function(){
                 var date = this.tweetDate;
                 var dd = date.getDate();
@@ -159,8 +171,8 @@
             userId: "0",
             tweetDate: new Date(),
             tweetContent: "tweety tweeter tweeting tweet",
-            tweetTags: ["tweet"],
-            tweetMentions: ["Link"],
+            tweetTags: ["#tweet"],
+            tweetMentions: ["@Link"],
             getDate: function(){
                 var date = this.tweetDate;
                 var dd = date.getDate();
@@ -180,8 +192,8 @@
             userId: "0",
             tweetDate: new Date(),
             tweetContent: "specna arms makes decent stuff.",
-            tweetTags: ["AEG","specna arms"],
-            tweetMentions: ["Link"],
+            tweetTags: ["#AEG","#specna arms"],
+            tweetMentions: ["@Link"],
             getDate: function(){
                 var date = this.tweetDate;
                 var dd = date.getDate();
@@ -201,8 +213,8 @@
             userId: "0",
             tweetDate: new Date(),
             tweetContent: "Still broke",
-            tweetTags: ["nocash","broke"],
-            tweetMentions: ["Link"],
+            tweetTags: ["#nocash","#broke"],
+            tweetMentions: ["@Link"],
             getDate: function(){
                 var date = this.tweetDate;
                 var dd = date.getDate();
@@ -224,8 +236,8 @@
             userId: "1",
             tweetDate: new Date(),
             tweetContent: "wasted...",
-            tweetTags: ["sick", "wasted"],
-            tweetMentions: ["Ba"],
+            tweetTags: ["#sick", "#wasted"],
+            tweetMentions: ["@Ba"],
             getDate: function(){
                 var date = this.tweetDate;
                 var dd = date.getDate();
@@ -245,8 +257,8 @@
             userId: "1",
             tweetDate: new Date(),
             tweetContent: "Let's party!",
-            tweetTags: ["yolo"],
-            tweetMentions: ["Ba"],
+            tweetTags: ["#yolo"],
+            tweetMentions: ["@Ba"],
             getDate: function(){
                 var date = this.tweetDate;
                 var dd = date.getDate();
@@ -268,8 +280,8 @@
             userId: "1",
             tweetDate: new Date(),
             tweetContent: "Was fun at the cinema let's do it again.",
-            tweetTags: ["Pathé", "movies"],
-            tweetMentions: ["Yongyi"],
+            tweetTags: ["#Pathé", "#movies"],
+            tweetMentions: ["@Yongyi"],
             getDate: function(){
                 var date = this.tweetDate;
                 var dd = date.getDate();
@@ -289,8 +301,8 @@
             userId: "1",
             tweetDate: new Date(),
             tweetContent: "Got owned in pool..",
-            tweetTags: ["pool"],
-            tweetMentions: ["Yongyi"],
+            tweetTags: ["#pool"],
+            tweetMentions: ["@Yongyi"],
             getDate: function(){
                 var date = this.tweetDate;
                 var dd = date.getDate();
