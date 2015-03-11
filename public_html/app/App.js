@@ -62,6 +62,19 @@
         this.timelineTabIsSet = function(tabName){
             return(this.selectedTimelineTab === tabName);
         };
+        
+    }]);
+    
+    app.controller('timelineController', [function(){
+        this.getLatestTweet = function(tweets){
+            console.log(tweets.length);
+            var allTweets = [];
+            allTweets = tweets;
+            allTweets.sort(function(a,b){
+                return a-b;
+            });
+            return allTweets[allTweets.length - 1];
+        };
     }]);
     
     app.controller('tweetController', [function(){
@@ -94,9 +107,6 @@
             this.tweet.tweetId = (user.tweets.length) +1;
             this.tweet.userId = user.id;
             this.tweet.tweetDate = new Date();
-            console.log(this.tweet.tweetDate);
-            console.log(new Date().getTime());
-            console.log(new Date().toDateString());
             this.tweet.tweetContent = tweetContent;
             this.tweet.tweetTags = tags;
             this.tweet.tweetMentions = mentions;
@@ -148,7 +158,7 @@
         {
             tweetId: "0",
             userId: "0",
-            tweetDate: new Date(),
+            tweetDate: new Date("July 7, 777 07:07:07"),
             tweetContent: "specna arms makes decent stuff, check it out!",
             tweetTags: [],
             tweetMentions: ["@Link", "@Ba"],
@@ -169,7 +179,7 @@
         {
             tweetId: "1",
             userId: "0",
-            tweetDate: new Date(),
+            tweetDate: new Date("April 17, 2000 11:13:00"),
             tweetContent: "tweety tweeter tweeting tweet",
             tweetTags: ["#tweet"],
             tweetMentions: ["@Link"],
@@ -190,7 +200,7 @@
         {
             tweetId: "2",
             userId: "0",
-            tweetDate: new Date(),
+            tweetDate: new Date("December 5, 2009 11:23:09"),
             tweetContent: "specna arms makes decent stuff.",
             tweetTags: ["#AEG","#specna arms"],
             tweetMentions: ["@Link"],
@@ -211,7 +221,7 @@
         {
             tweetId: "3",
             userId: "0",
-            tweetDate: new Date(),
+            tweetDate: new Date("January 1, 2014 05:13:00"),
             tweetContent: "Still broke",
             tweetTags: ["#nocash","#broke"],
             tweetMentions: ["@Link"],
@@ -234,7 +244,7 @@
         {
             tweetId: "4",
             userId: "1",
-            tweetDate: new Date(),
+            tweetDate: new Date("March 18, 2015 08:23:15"),
             tweetContent: "wasted...",
             tweetTags: ["#sick", "#wasted"],
             tweetMentions: ["@Ba"],
@@ -255,7 +265,7 @@
         {
             tweetId: "5",
             userId: "1",
-            tweetDate: new Date(),
+            tweetDate: new Date("October 13, 2008 02:13:00"),
             tweetContent: "Let's party!",
             tweetTags: ["#yolo"],
             tweetMentions: ["@Ba"],
@@ -278,7 +288,7 @@
         {
             tweetId: "6",
             userId: "1",
-            tweetDate: new Date(),
+            tweetDate: new Date("October 13, 1979 11:43:10"),
             tweetContent: "Was fun at the cinema let's do it again.",
             tweetTags: ["#Pathé", "#movies"],
             tweetMentions: ["@Yongyi"],
@@ -299,7 +309,7 @@
         {
             tweetId: "7",
             userId: "1",
-            tweetDate: new Date(),
+            tweetDate: new Date("October 13, 2005 05:18:04"),
             tweetContent: "Got owned in pool..",
             tweetTags: ["#pool"],
             tweetMentions: ["@Yongyi"],
@@ -319,7 +329,9 @@
         }
     ];
     
+    //TODO: trends, get them from all tweets, order by most occuring
     var testTrends = ["JEA", "DPI", "Specna arms", "Banana", "Chappie"];
+    //TODO: fix this...this is just...no.
     var allTweets = testTweets.concat(testTweets2).concat(testTweets3);
     
     var yongyi = {

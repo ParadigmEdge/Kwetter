@@ -45,8 +45,8 @@ and open the template in the editor.
                                     <br>
                                     <ul class="list-inline content">
                                         <!-- order by date is not working...yet...  -->
-                                        <li ng-repeat="tweet in app.timeline | orderBy:'tweetId' | filter:tweet.search">
-                                            [{{tweet.getDate()}}] {{tweet.tweetContent}} 
+                                        <li ng-repeat="tweet in app.timeline | orderBy:'-tweetDate' | filter:tweet.search">
+                                            [{{tweet.getDate()}}] {{app.users[tweet.userId].name}}: {{tweet.tweetContent}} 
                                             <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags ">{{t}}</a> 
                                             <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions ">{{m}}</a> 
                                         </li>
@@ -59,7 +59,7 @@ and open the template in the editor.
                                     <br>
                                     <ul class="list-inline content">
                                         <li ng-repeat="tweet in app.mentions | date">
-                                            [{{tweet.getDate()}}] {{tweet.tweetContent}} 
+                                            [{{tweet.getDate()}}] {{app.users[tweet.userId].name}}: {{tweet.tweetContent}} 
                                             <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags track by $index">#{{t}}</a> 
                                             <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions track by $index">@{{m}}</a> 
                                         </li>
@@ -70,7 +70,7 @@ and open the template in the editor.
                         </div>
                     </div>
                     <div class="rightbody">
-                        <div class="infoBox">
+                        <div class="infoBox" ng-controller="timelineController as TLController">
                             <ul>
                                 <li>
                                     Your tweets ({{app.users[app.selectedUser].tweets.length}})
