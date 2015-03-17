@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html ng-app="kwetterApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head> 
+  <body ng-controller="dataTestController as app">
+    <div id="main">
+          <div id="head"></div>
+          <div id="body">
+              
+              
+            <table class="table Userstable">
+                <tr>
+                    <td><h3>All Users</h3></td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="user in allUsers">
+                    <td>{{user.name}}</td>
+                </tr>
+                
+                <tr>
+                    <td><h3>All tweets</h3></td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="tweet in allTweets">
+                    <td>{{tweet.tweet}}</td>
+                </tr>
+
+                <tr>
+                    <td><h3>Selected user info</h3></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>{{selectedUser.name}} - {{selectedUser.web}} - {{selectedUser.bio}}</td>
+                </tr>
+                
+                <tr>
+                    <td><h3>All selected user tweets</h3></td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="t in selectedUserTweets">
+                    <td>
+                        {{t.datum}} - {{t.tweet}} 
+                        <a href="" class="tweetTagLink" ng-repeat="t in tweet.tags track by $index">#{{t}}</a> 
+                    </td>
+                </tr>
+            </table>   
+          </div>
+          <div id="footer"></div>
+    </div>
+  </body>
+  <footer>
+    <script src="assets/libs/angular.js"></script>
+    <script src="assets/libs/angular-route.js"></script>
+    <script src="app/angular/App.js"></script>
+    <script src="app/angular/Controllers.js"></script>
+    <script src="app/angular/Services.js"></script>
+
+    <script type="text/javascript" src="assets/libs/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="assets/libs/angular-resource.min.js"></script>
+  </footer>
+</html>

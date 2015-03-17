@@ -4,16 +4,17 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html ng-app="App">
+<html ng-app="kwetterApp">
     <head>
         <title>Kwetter Client</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="assets/css/style-index.css">
     </head>
-    <body ng-controller="App as app">
+    <body ng-controller="mainController as app">
         <div class="main" >
             <div class="head">
+                <a href="notFound.html">test requests</a>
                 <a href="myView.html" ng-click="app.setCurrentUser(0)">login</a>
             </div>
             <div class="body">
@@ -22,8 +23,8 @@ and open the template in the editor.
                     <div class="header box">
                         <table class="header box table">
                             <tr>
-                                <td><img class="avatar" ng-src="{{app.users[app.selectedUser].avatar_thumb}}"></td>
-                                <td><h1>{{app.users[app.selectedUser].name}} {{app.users[app.selectedUser].lastname}}</h1></td>
+                                <td><img class="avatar" ng-src="{{selectedUser.avatar_thumb}}"></td>
+                                <td><h1>{{selectedUser.name}}</h1></td>
                             </tr>
                         </table>
                     </div>
@@ -49,9 +50,9 @@ and open the template in the editor.
                             <div class="tweets">
                                 <h3>tweets</h3> 
                                 <ul class="list-inline content">
-                                    <li ng-repeat="tweet in app.users[app.selectedUser].tweets track by $index">
-                                        [{{tweet.getDate()}}] {{tweet.tweetContent}} 
-                                        <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags track by $index">#{{t}}</a> 
+                                    <li ng-repeat="tweet in selectedUserTweets track by $index">
+<!--                                        [{{tweet.getDate()}}] {{tweet.tweetContent}} -->
+                                        <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags">#{{t}}</a> 
                                         <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions track by $index">@{{m}}</a> 
                                     </li>
                                 </ul>
@@ -64,10 +65,10 @@ and open the template in the editor.
                     <div class="details-box">
                         <h3>Details</h3>
                         <ul class="details list">
-                            <li>name: {{app.users[app.selectedUser].name}}</li>
-                            <li>location: {{app.users[app.selectedUser].location}}</li>
-                            <li>web: <a href="{{app.users[app.selectedUser].webURL}}">{{app.users[app.selectedUser].web}}</a></li>
-                            <li>bio: {{app.users[app.selectedUser].bio}}</li>
+                            <li>name: {{selectedUser.name}}</li>
+                            <li>location: {{selectedUser.location}}</li>
+                            <li>web: <a href="{{selectedUser.web}}">{{selectedUser.web}}</a></li>
+                            <li>bio: {{selectedUser.bio}}</li>
                         </ul>  
                     </div>
                     
@@ -97,6 +98,11 @@ and open the template in the editor.
     <footer>
         <script src="assets/libs/angular.js"></script>
         <script src="assets/libs/angular-route.js"></script>
-        <script src="app/App.js"></script>
+        <script src="app/angular/App.js"></script>
+        <script src="app/angular/Controllers.js"></script>
+        <script src="app/angular/Services.js"></script>
+        
+        <script type="text/javascript" src="assets/libs/angular-ui-router.min.js"></script>
+        <script type="text/javascript" src="assets/libs/angular-resource.min.js"></script>
     </footer>
 </html>

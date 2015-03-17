@@ -4,14 +4,14 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html ng-app="App">
+<html ng-app="kwetterApp">
     <head>
         <title>My page</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="assets/css/style-personalView.css">
     </head>
-    <body ng-controller="App as app">
+    <body ng-controller="mainController as app">
         <div class="main" >
             <div class="head">
                 Hello {{app.users[app.currentUser].name}}, 
@@ -123,6 +123,11 @@ and open the template in the editor.
     <footer>
         <script src="assets/libs/angular.js"></script>
         <script src="assets/libs/angular-route.js"></script>
-        <script src="app/App.js"></script>
+        <script src="app/angular/App.js"></script>
+        <script src="app/angular/Controllers.js"></script>
+        <script src="app/angular/Services.js"></script>
+        
+        <script type="text/javascript" src="assets/libs/angular-ui-router.min.js"></script>
+        <script type="text/javascript" src="assets/libs/angular-resource.min.js"></script>
     </footer>
 </html>
