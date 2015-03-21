@@ -23,7 +23,7 @@ and open the template in the editor.
                     <div class="header box">
                         <table class="header box table">
                             <tr>
-                                <td><img class="avatar" ng-src="{{selectedUser.avatar_thumb}}"></td>
+                                <td><img class="avatar" ng-src="{{selectedUser.avatar}}"></td>
                                 <td><h1>{{selectedUser.name}}</h1></td>
                             </tr>
                         </table>
@@ -33,8 +33,11 @@ and open the template in the editor.
                         <div class="following content" ng-show='app.isSet(1)'>
                             <div class="followings">
                                 <h3>following</h3> 
+                                <div ng-show="!selectedUser.following.length">
+                                        Oh no! You currently aren't following anyone at all! Go follow someone!
+                                    </div>
                                 <ul class="list-inline content">
-                                    <li ng-repeat="followingperson in app.users[app.selectedUser].following track by $index">{{followingperson.name}} {{followingperson.lastname}}</li>
+                                    <li ng-repeat="FOLLOWING in selectedUser.following">{{FOLLOWING.name}}</li>
                                 </ul>
                             </div>
                         </div>
@@ -42,18 +45,25 @@ and open the template in the editor.
                             <div class="followers">
                                 <h3>followers</h3> 
                                 <ul class="list-inline content">
-                                    <li ng-repeat="personfollowing in app.users[app.selectedUser].followers track by $index">{{personfollowing.name}} {{personfollowing.lastname}}</li>
+                                    <div ng-show="!selectedUser.follower.length">
+                                        You have absolutely no followers at all! ;_;
+                                    </div>
+                                    <li ng-repeat="FOLLOWER in selectedUser.followers">{{FOLLOWER.name}}</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="tweet content" ng-show='app.isSet(3)'>
                             <div class="tweets">
                                 <h3>tweets</h3> 
+                                <div ng-show="!selectedUser.tweets.length">
+                                    Nope, no tweets here.
+                                </div>
                                 <ul class="list-inline content">
-                                    <li ng-repeat="tweet in selectedUserTweets track by $index">
-<!--                                        [{{tweet.getDate()}}] {{tweet.tweetContent}} -->
-                                        <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags">#{{t}}</a> 
-                                        <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions track by $index">@{{m}}</a> 
+                                    <li ng-repeat="tweet in selectedUser.tweets track by $index">
+                                        [{{tweet.datum}}] {{tweet.tweet}} 
+                                        <a href="" class="tweetTagLink" ng-repeat="t in tweet.tags  ">#{{t.value}}</a> 
+                                        <a href="" class="tweetMentionLink" ng-repeat="m in tweet.mentions track by $index">@{{m.value}}</a> 
+                                        <i>gekwetterd van: {{tweet.vanaf}}</i>
                                     </li>
                                 </ul>
                             </div>
@@ -67,24 +77,24 @@ and open the template in the editor.
                         <ul class="details list">
                             <li>name: {{selectedUser.name}}</li>
                             <li>location: {{selectedUser.location}}</li>
-                            <li>web: <a href="{{selectedUser.web}}">{{selectedUser.web}}</a></li>
+                            <li>web: <a href="">{{selectedUser.web}}</a></li>
                             <li>bio: {{selectedUser.bio}}</li>
                         </ul>  
                     </div>
                     
                     <div class='content-select-box'>
                         <ul class="contentSelectList">
-                            <li ng-class='{active:tab.isSet(1)}'><a href='#' ng-click='app.setTab(1)'>following {{app.users[app.selectedUser].following.length}}</a></li>
-                            <li ng-class='{active:tab.isSet(2)}'><a href='#' ng-click='app.setTab(2)'>followers {{app.users[app.selectedUser].followers.length}}</a></li>
-                            <li ng-class='{active:tab.isSet(3)}'><a href='#' ng-click='app.setTab(3)'>tweets {{app.users[app.selectedUser].tweets.length}}</a></li>
+                            <li ng-class='{active:tab.isSet(1)}'><a href='#' ng-click='app.setTab(1)'>following [{{selectedUser.following.length}}]</a></li>
+                            <li ng-class='{active:tab.isSet(2)}'><a href='#' ng-click='app.setTab(2)'>followers [{{selectedUser.follower.length}}]</a></li>
+                            <li ng-class='{active:tab.isSet(3)}'><a href='#' ng-click='app.setTab(3)'>tweets [{{selectedUser.tweets.length}}]</a></li>
                         </ul>
                     </div>
                     
                     <div class="followers-box">
                         <h3>Following</h3>
                         <ul class="followersList">
-                            <li ng-repeat="p in app.users[app.selectedUser].followers track by $index">
-                                <a href="" ng-click="app.setSelectedUser(p.id)">{{p.name}}</a>
+                            <li ng-repeat="f in selectedUser.following">
+                                <a href="" ng-click="app.setSelectedUser(f.name)">{{f.name}}</a>
                             </li>
                         </ul>
                     </div> 

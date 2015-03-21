@@ -14,7 +14,7 @@ and open the template in the editor.
     <body ng-controller="mainController as app">
         <div class="main" >
             <div class="head">
-                Hello {{app.users[app.currentUser].name}}, 
+                Hello {{currentUser.name}}, 
                 <a href="index.html" ng-click="app.setCurrentUser(-1)"> logout</a>
                 <div class="searchBox">
                     <form method="get">
@@ -73,30 +73,32 @@ and open the template in the editor.
                         <div class="infoBox" ng-controller="timelineController as TLController">
                             <ul>
                                 <li>
-                                    Your tweets ({{app.users[app.selectedUser].tweets.length}})
+                                    Your tweets ({{currentUser.tweets.length}})
                                     <br>
                                     <i>Just now:</i> 
-                                    {{app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetContent}} 
-                                    <a href="" class="tweetTagLink" ng-show="app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetTags.length > 0" ng-repeat="t in app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetTags track by $index">{{t}}</a> 
-                                    <a href="" class="tweetMentionLink" ng-show="app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetMentions.length > 0"ng-repeat="m in app.users[app.selectedUser].tweets[(app.users[app.selectedUser].tweets.length)-1].tweetMentions track by $index">{{m}}</a> 
+                                    {{currentUser.tweets[currentUser.tweets.length -1].tweet}}               
+                                    <!--{{currentUser.tweets[currentUser.tweets.length -1].tags}}
+                                    {{currentUser.tweets[currentUser.tweets.length -1].mentions}}-->
+                                    <a href="" class="tweetTagLink" ng-repeat="t in currentUser.tweets[currentUser.tweets.length -1].tags track by $index">{{t.value}}</a> 
+                                    <a href="" class="tweetMentionLink" ng-repeat="m in currentUser.tweets[currentUser.tweets.length -1].mentions track by $index">{{m.value}}</a> 
                                     <br><br>
                                 </li>
                                 <li>
-                                    Following ({{app.users[app.selectedUser].followers.length}})
+                                    Following ({{currentUser.following.length}})
                                     <br>
-                                    <ul class="followersList">
-                                        <li ng-repeat="n in app.users[app.selectedUser].followers track by $index">
-                                            <a href="index.html" ng-click="app.setSelectedUser(n.id)">{{n.name}}</a>
+                                    <ul class="followingsList">
+                                        <li ng-repeat="n in currentUser.following track by $index">
+                                            <a href="index.html" ng-click="app.setSelectedUser(n.name)">{{n.name}}</a>
                                         </li>
                                     </ul>
                                     <br><br>
                                 </li>
                                 <li>
-                                    Followers ({{app.users[app.selectedUser].following.length}})
+                                    Followers ({{currentUser.follower.length}})
                                     <br>
                                     <ul class="followersList">
-                                        <li ng-repeat="p in app.users[app.selectedUser].following track by $index">
-                                            <a href="index.html" ng-click="app.setSelectedUser(p.id)">{{p.name}}</a>
+                                        <li ng-repeat="p in currentUser.follower track by $index">
+                                            <a href="index.html" ng-click="app.setSelectedUser(p.name)">{{p.name}}</a>
                                         </li>
                                     </ul>
                                     <br><br>

@@ -11,17 +11,22 @@ angular.module("kwetterApp.controllers",[]).controller('mainController',function
     $scope.currentUserName = "Hans";   // fake logged in user, does not work if redirected from other page but only mock anyways
     $scope.selectedTimelineTab = 1; // personal timeline tab / mentions tab. refactor to own controller?
     
+    console.log($scope.selectedUser);
+    
     this.setSelectedUser = function(userName){
         $scope.selectedUser=User.get({id:userName});
+        $scope.selectedUserTweets=Tweet.query({id:userName});
+        $scope.selectedUserName = userName;
     };
     this.setCurrentUser = function(userName){
         $scope.currentUser=User.get({id:userName});
+        $scope.currentUserName = userName;
     };
     this.setTab = function(newvalue){
-        this.selectedTab = newvalue;
+        $scope.selectedTab = newvalue;
     };
     this.isSet = function(tabName){
-        return(this.selectedTab === tabName);
+        return($scope.selectedTab === tabName);
     };
     this.setTimelineTab = function(newvalue){
         this.selectedTimelineTab = newvalue;
@@ -37,7 +42,7 @@ angular.module("kwetterApp.controllers",[]).controller('mainController',function
     //HOW TO GET TAGS AND MENTIONS FROM XML OBJECT? (=resource by itself?)
     
     console.log($scope.selectedUserTweets);
-    // can't got deeper -> $scope.selectedUserTweets.tags = undefined
+    // can't go deeper -> $scope.selectedUserTweets.tags = undefined
 }).controller('timelineController',function(){
     
 }).controller('tweetController',function(){

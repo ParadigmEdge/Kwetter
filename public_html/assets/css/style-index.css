@@ -73,3 +73,8 @@ ul {
     padding: 0px;
     margin: 0px;
 }
+
+i{
+    font-size: 12px;
+    color: gray;
+}

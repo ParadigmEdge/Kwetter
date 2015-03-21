@@ -3,7 +3,7 @@ angular.module("kwetterApp.services",[]).factory("User", function($resource){
         update: {method: 'PUT'}
     });
 }).factory("Tweet", function($resource){
-    return $resource('http://localhost:23761/Kwetter_Server/api/kwetter/tweets/:id',{id:'@id'},{
+    return $resource('http://localhost:23761/Kwetter_Server/api/kwetter/users/:id/tweets',{id:'@id'},{
         update: {method: 'PUT'}
     });
 });
