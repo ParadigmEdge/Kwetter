@@ -15,7 +15,7 @@ and open the template in the editor.
         <div class="main" >
             <div class="head">
                 Hello {{currentUser.name}}, 
-                <a href="index.html" ng-click="app.setCurrentUser(-1)"> logout</a>
+                <a href="index.html" ng-click="setCurrentUser(-1)"> logout</a>
                 <div class="searchBox">
                     <form method="get">
                         <input type="text" name="searchText" placeholder="search..." ng-model="tweet.search"/>
@@ -28,40 +28,40 @@ and open the template in the editor.
                     <div class="leftbody">
                         <div class="tweetBox">
                             <h2>Whats happening?</h2>
-                            <form novalidate ng-controller="tweetController as controller" class="tweet-form" ng-submit="controller.addTweet(app.users[app.currentUser])">
-                                <textarea class="tweetContent" maxlength="140" ng-model="controller.newTweetContent"></textarea>
+                            
+                            <form novalidate ng-controller="tweetController as controller" class="tweet-form" ng-submit="addTweet()">
+                                <textarea class="tweetContent" maxlength="140" ng-model="newTweetContent"></textarea>
                                 <div class="submit"><input type="submit" name="searchSubmit" value="tweet"/></div>
                             </form>           
                         </div>
 
                         <div class="timelineBox">
                             <ul class="timelineSelectList">
-                                <li class="timelineSelectListItem" ng-class='{active:tab.timelineTabIsSet(1)}'><a href='#' ng-click='app.setTimelineTab(1)'>Timeline</a></li>
-                                <li class="timelineSelectListItem" ng-class='{active:tab.timelineTabIsSet(2)}'><a href='#' ng-click='app.setTimelineTab(2)'>@Mentions</a></li>
+                                <li class="timelineSelectListItem" ng-class='{active:tab.timelineTabIsSet(1)}'><a href='#' ng-click='setTimelineTab(1)'>Timeline</a></li>
+                                <li class="timelineSelectListItem" ng-class='{active:tab.timelineTabIsSet(2)}'><a href='#' ng-click='setTimelineTab(2)'>@Mentions</a></li>
                             </ul>
                             
-                            <div class="timeline" ng-show='app.timelineTabIsSet(1)'>
-                                <div class="followers">
+                            <div class="timeline" ng-show='timelineTabIsSet(1)'>
+                                <div class="tweets">
                                     <br>
                                     <ul class="list-inline content">
-                                        <!-- order by date is not working...yet...  -->
-                                        <li ng-repeat="tweet in app.timeline | orderBy:'-tweetDate' | filter:tweet.search">
-                                            [{{tweet.getDate()}}] {{app.users[tweet.userId].name}}: {{tweet.tweetContent}} 
-                                            <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags ">{{t}}</a> 
-                                            <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions ">{{m}}</a> 
+                                        <li ng-repeat="tweet in allTweets | orderBy:'-date' | filter:tweet.search">
+                                            [{{tweet.date}}] {{tweet.owner}}: {{tweet.tweet}} 
+                                            <a href="" class="tweetTagLink" ng-repeat="t in tweet.tags ">#{{t.value}}</a> 
+                                            <a href="" class="tweetMentionLink" ng-repeat="m in tweet.mentions ">@{{m.value}}</a> 
                                         </li>
                                     </ul>
                                 </div>
                             </div>
 
-                            <div class="mentions" ng-show='app.timelineTabIsSet(2)'>
-                                <div class="tweets">
+                            <div class="mentions" ng-show='timelineTabIsSet(2)'>
+                                <div class="mentions">
                                     <br>
                                     <ul class="list-inline content">
-                                        <li ng-repeat="tweet in app.mentions | date">
-                                            [{{tweet.getDate()}}] {{app.users[tweet.userId].name}}: {{tweet.tweetContent}} 
-                                            <a href="" class="tweetTagLink" ng-repeat="t in tweet.tweetTags track by $index">#{{t}}</a> 
-                                            <a href="" class="tweetMentionLink" ng-repeat="m in tweet.tweetMentions track by $index">@{{m}}</a> 
+                                        <li ng-repeat="tweet in allTweetsWithMention | orderBy:'-date' | filter:tweet.search">
+                                            [{{tweet.date}}] {{tweet.owner}}: {{tweet.tweet}} 
+                                            <a href="" class="tweetTagLink" ng-repeat="t in tweet.tags track by $index">#{{t.value}}</a> 
+                                            <a href="" class="tweetMentionLink" ng-repeat="m in tweet.mentions track by $index">@{{m.value}}</a> 
                                         </li>
                                     </ul>
                                 </div>
@@ -76,11 +76,9 @@ and open the template in the editor.
                                     Your tweets ({{currentUser.tweets.length}})
                                     <br>
                                     <i>Just now:</i> 
-                                    {{currentUser.tweets[currentUser.tweets.length -1].tweet}}               
-                                    <!--{{currentUser.tweets[currentUser.tweets.length -1].tags}}
-                                    {{currentUser.tweets[currentUser.tweets.length -1].mentions}}-->
-                                    <a href="" class="tweetTagLink" ng-repeat="t in currentUser.tweets[currentUser.tweets.length -1].tags track by $index">{{t.value}}</a> 
-                                    <a href="" class="tweetMentionLink" ng-repeat="m in currentUser.tweets[currentUser.tweets.length -1].mentions track by $index">{{m.value}}</a> 
+                                    {{currentUser.tweets[currentUser.tweets.length -1].tweet}}
+                                    <a href="" class="tweetTagLink" ng-repeat="t in currentUser.tweets[currentUser.tweets.length -1].tags track by $index">#{{t.value}}</a> 
+                                    <a href="" class="tweetMentionLink" ng-repeat="m in currentUser.tweets[currentUser.tweets.length -1].mentions track by $index">@{{m.value}}</a> 
                                     <br><br>
                                 </li>
                                 <li>
@@ -88,7 +86,7 @@ and open the template in the editor.
                                     <br>
                                     <ul class="followingsList">
                                         <li ng-repeat="n in currentUser.following track by $index">
-                                            <a href="index.html" ng-click="app.setSelectedUser(n.name)">{{n.name}}</a>
+                                            <a href="index.html" ng-click="setSelectedUser(n.name)">{{n.name}}</a>
                                         </li>
                                     </ul>
                                     <br><br>
@@ -98,7 +96,7 @@ and open the template in the editor.
                                     <br>
                                     <ul class="followersList">
                                         <li ng-repeat="p in currentUser.follower track by $index">
-                                            <a href="index.html" ng-click="app.setSelectedUser(p.name)">{{p.name}}</a>
+                                            <a href="index.html" ng-click="setSelectedUser(p.name)">{{p.name}}</a>
                                         </li>
                                     </ul>
                                     <br><br>
@@ -110,7 +108,7 @@ and open the template in the editor.
                         <div class="trendingBox">
                             <h3>Trends</h3>
                             <ul class="list-inline content">
-                                <li ng-repeat="trend in app.trends track by $index">
+                                <li ng-repeat="trend in trends track by $index">
                                     <a href="#" class="trendLink">#{{trend}}</a> 
                                 </li>
                             </ul>

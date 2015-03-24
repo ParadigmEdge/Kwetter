@@ -15,7 +15,7 @@ and open the template in the editor.
         <div class="main" >
             <div class="head">
                 <a href="notFound.html">test requests</a>
-                <a href="myView.html" ng-click="app.setCurrentUser(0)">login</a>
+                <a href="myView.html" ng-click="setCurrentUser(0)">login</a>
             </div>
             <div class="body">
                 <div class="left">
@@ -30,7 +30,7 @@ and open the template in the editor.
                     </div>
                     
                     <div class="selected content box"> 
-                        <div class="following content" ng-show='app.isSet(1)'>
+                        <div class="following content" ng-show='isSet(1)'>
                             <div class="followings">
                                 <h3>following</h3> 
                                 <div ng-show="!selectedUser.following.length">
@@ -41,7 +41,7 @@ and open the template in the editor.
                                 </ul>
                             </div>
                         </div>
-                        <div class="followers content" ng-show='app.isSet(2)'>
+                        <div class="followers content" ng-show='isSet(2)'>
                             <div class="followers">
                                 <h3>followers</h3> 
                                 <ul class="list-inline content">
@@ -52,15 +52,15 @@ and open the template in the editor.
                                 </ul>
                             </div>
                         </div>
-                        <div class="tweet content" ng-show='app.isSet(3)'>
+                        <div class="tweet content" ng-show='isSet(3)'>
                             <div class="tweets">
                                 <h3>tweets</h3> 
                                 <div ng-show="!selectedUser.tweets.length">
                                     Nope, no tweets here.
                                 </div>
                                 <ul class="list-inline content">
-                                    <li ng-repeat="tweet in selectedUser.tweets track by $index">
-                                        [{{tweet.datum}}] {{tweet.tweet}} 
+                                    <li ng-repeat="tweet in selectedUser.tweets">
+                                        [{{tweet.date}}] {{tweet.tweet}} 
                                         <a href="" class="tweetTagLink" ng-repeat="t in tweet.tags  ">#{{t.value}}</a> 
                                         <a href="" class="tweetMentionLink" ng-repeat="m in tweet.mentions track by $index">@{{m.value}}</a> 
                                         <i>gekwetterd van: {{tweet.vanaf}}</i>
@@ -84,9 +84,9 @@ and open the template in the editor.
                     
                     <div class='content-select-box'>
                         <ul class="contentSelectList">
-                            <li ng-class='{active:tab.isSet(1)}'><a href='#' ng-click='app.setTab(1)'>following [{{selectedUser.following.length}}]</a></li>
-                            <li ng-class='{active:tab.isSet(2)}'><a href='#' ng-click='app.setTab(2)'>followers [{{selectedUser.follower.length}}]</a></li>
-                            <li ng-class='{active:tab.isSet(3)}'><a href='#' ng-click='app.setTab(3)'>tweets [{{selectedUser.tweets.length}}]</a></li>
+                            <li ng-class='{active:tab.isSet(1)}'><a href='#' ng-click='setTab(1)'>following [{{selectedUser.following.length}}]</a></li>
+                            <li ng-class='{active:tab.isSet(2)}'><a href='#' ng-click='setTab(2)'>followers [{{selectedUser.follower.length}}]</a></li>
+                            <li ng-class='{active:tab.isSet(3)}'><a href='#' ng-click='setTab(3)'>tweets [{{selectedUser.tweets.length}}]</a></li>
                         </ul>
                     </div>
                     
@@ -94,7 +94,7 @@ and open the template in the editor.
                         <h3>Following</h3>
                         <ul class="followersList">
                             <li ng-repeat="f in selectedUser.following">
-                                <a href="" ng-click="app.setSelectedUser(f.name)">{{f.name}}</a>
+                                <a href="" ng-click="setSelectedUser(f.name)">{{f.name}}</a>
                             </li>
                         </ul>
                     </div> 
