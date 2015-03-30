@@ -36,12 +36,12 @@ angular.module("kwetterApp.controllers",[]).controller('mainController',function
     $scope.timelineTabIsSet = function(tabName){
         return($scope.selectedTimelineTab === tabName);
     };
-}).controller('dataTestController',function($scope,$rootScope, User, Tweet, postTweetService){
+}).controller('dataTestController',function($scope,$rootScope, User, Tweet){
     $scope.allUsers=User.query();
     $scope.allTweets=Tweet.query();
     $scope.selectedUser=User.get({id:"Hans"});
     $scope.selectedUserTweets=Tweet.query({id:"Hans"});
-}).controller('tweetController',function($scope,$rootScope, Tweet, postTweetService){
+}).controller('tweetController',function($scope,$rootScope, Tweet){
     $scope.newTweetContent = "";
     
     $scope.addTweet = function(){

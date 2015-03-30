@@ -13,7 +13,7 @@ angular.module("kwetterApp.services",[]).factory("User", function($resource){
     return $resource('http://localhost:23761/Kwetter_Server/api/kwetter/tweets/mention/:id',{id:'@id'},{
         get:{method:'GET', isArray:true}
     });
-}).factory("postTweetService", function($http, $q){
+}).factory("getTweetsService", function($http, $q){
     return{
         postTweet:function(){
             return $http.get("http://localhost:23761/Kwetter_Server/api/kwetter/tweets")
