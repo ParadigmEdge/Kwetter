@@ -1,7 +1,7 @@
-angular.module("kwetterApp.controllers",[]).controller('mainController',function($scope, $stateParams, $state, $resource, User, Tweet, Mention){
+angular.module("kwetterApp.controllers",[]).controller('mainController',function($scope, $rootScope, $stateParams, $state, $resource, User, Tweet, Mention){
     
     $scope.allUsers=User.query();
-    $scope.allTweets=Tweet.query();
+    $rootScope.allTweets=Tweet.query(); //usage of rootScope = same as making it a global variable, do it sparingly and only for data 
     
     $scope.allTweetsWithMention=Mention.get({id:"Hans"});
     $scope.trends=["Most trending", "Very trending", "Little trending"]; //TODO
@@ -36,41 +36,50 @@ angular.module("kwetterApp.controllers",[]).controller('mainController',function
     $scope.timelineTabIsSet = function(tabName){
         return($scope.selectedTimelineTab === tabName);
     };
-}).controller('dataTestController',function($scope, User, Tweet){
+}).controller('dataTestController',function($scope,$rootScope, User, Tweet, postTweetService){
     $scope.allUsers=User.query();
     $scope.allTweets=Tweet.query();
     $scope.selectedUser=User.get({id:"Hans"});
     $scope.selectedUserTweets=Tweet.query({id:"Hans"});
-}).controller('timelineController',function(){
-    
-}).controller('tweetController',function($scope, Tweet){
+}).controller('tweetController',function($scope,$rootScope, Tweet, postTweetService){
     $scope.newTweetContent = "";
     
     $scope.addTweet = function(){
-        Tweet.save({id:$scope.currentUserName},$scope.newTweetContent);
-        $scope.newTweetContent = "";
+        if($scope.newTweetContent !== ""){
+            Tweet.save({id:$scope.currentUserName},$scope.newTweetContent)
+            .$promise.then(function(){
+                $scope.refresh();
+            });
+        }
     };
+    
+    $scope.refresh = function(){
+        $scope.newTweetContent = "";
+        $rootScope.allTweets = Tweet.query();
+    };
+}).controller('timelineController',function(){
+
 });
 
 //NOT USED
-var newDate = function(){
-    var date;
-
-    var date = new Date();
-    var dd = date.getDate();
-    var mm = date.getMonth()+1; //January is 0!
-    var yyyy = date.getFullYear();
-    var HH = date.getHours();
-    var MM = date.getMinutes();
-
-    if(dd<10) {
-        dd='0'+dd;
-    } 
-
-    if(mm<10) {
-        mm='0'+mm;
-    } 
-
-    date = mm+'/'+dd+'/'+yyyy;
-    return date;
-};
+//var newDate = function(){
+//    var date;
+//
+//    var date = new Date();
+//    var dd = date.getDate();
+//    var mm = date.getMonth()+1; //January is 0!
+//    var yyyy = date.getFullYear();
+//    var HH = date.getHours();
+//    var MM = date.getMinutes();
+//
+//    if(dd<10) {
+//        dd='0'+dd;
+//    } 
+//
+//    if(mm<10) {
+//        mm='0'+mm;
+//    } 
+//
+//    date = mm+'/'+dd+'/'+yyyy;
+//    return date;
+//};
